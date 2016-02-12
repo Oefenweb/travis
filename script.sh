@@ -1,9 +1,9 @@
 #!/bin/bash
 
 if [ "$PHPCS" == 1 ]; then
-    vendor/bin/phpcs --config-set installed_paths vendor/cakephp/cakephp-codesniffer;
+    vendor/bin/phpcs --config-set installed_paths 'vendor/cakephp/cakephp-codesniffer,vendor/oefenweb/cakephp-codesniffer';
 
-    ARGS="-p --extensions=php --standard=CakePHP --ignore=vendor/ .";
+    ARGS="-p --extensions=php --standard=Oefenweb --ignore=vendor/ .";
     if [ -n "$PHPCS_IGNORE" ]; then
         ARGS="$ARGS --ignore='$PHPCS_IGNORE'"
     fi

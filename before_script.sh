@@ -3,7 +3,7 @@
 composer self-update
 
 if [ "$PHPCS" = '1' ]; then
-	composer require 'cakephp/cakephp-codesniffer:1.*';
+	composer require 'oefenweb/cakephp-codesniffer:1.*';
 	exit 0
 fi
 
