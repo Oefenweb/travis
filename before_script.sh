@@ -1,4 +1,6 @@
-#!/bin/bash
+#!/usr/bin/env bash
+#
+# set -x;
 
 composer self-update
 
@@ -65,25 +67,46 @@ mv $SELF_PATH/database.php Config/database.php
 
 COMPOSER_JSON="$(pwd)/Plugin/$PLUGIN_NAME/composer.json"
 if [ -f "$COMPOSER_JSON" ]; then
-    cp $COMPOSER_JSON ./composer.json;
-    composer install --no-interaction --prefer-source
+	cp $COMPOSER_JSON ./composer.json;
+	composer install --no-interaction --prefer-source
 fi
 
 for dep in $REQUIRE; do
-    composer require --no-interaction --prefer-source $dep;
+	composer require --no-interaction --prefer-source $dep;
 done
 
 if [ "$COVERALLS" = '1' ]; then
-	composer require satooshi/php-coveralls:dev-master
+	composer require --no-interaction 'satooshi/php-coveralls:dev-master'
 fi
 
 if [ "$PHPCS" != '1' ]; then
-	composer require 'phpunit/phpunit=3.7.38'
+	composer require --no-interaction 'phpunit/phpunit=3.7.38'
 fi
+
+cp -a ./vendor/* ./Vendor/;
 
 phpenv rehash
 
 set +H
+
+ls -lha ../vendor || true;
+ls -lha ../vendors || true;
+ls -lha ./vendor || true;
+ls -lha ./vendors || true;
+ls -lha ./Vendor || true;
+
+# Fix autoloading
+cat <<'EOF' > Config/autoload.txt
+// Load Composer autoload.
+require APP . 'Vendor/autoload.php';
+
+// Remove and re-prepend CakePHP's autoloader as Composer thinks it is the most important.
+// See: http://goo.gl/kKVJO7
+spl_autoload_unregister(array('App', 'load'));
+spl_autoload_register(array('App', 'load'), true, true);
+EOF
+
+sed -i '/<?php/r Config/autoload.txt' Config/bootstrap.php
 
 echo "CakePlugin::loadAll(array(array('bootstrap' => true, 'routes' => true, 'ignoreMissing' => true)));" >> Config/bootstrap.php
 

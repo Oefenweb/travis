@@ -1,4 +1,6 @@
-#!/bin/bash
+#!/usr/bin/env bash
+#
+# set -x;
 
 if [ "$PHPCS" == 1 ]; then
     vendor/bin/phpcs --config-set installed_paths 'vendor/cakephp/cakephp-codesniffer,vendor/oefenweb/cakephp-codesniffer';
