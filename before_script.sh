@@ -90,7 +90,8 @@ for dep in $REQUIRE; do
 done
 
 if [ "$PHPCS" != '1' ]; then
-  composer require --no-interaction 'phpunit/phpunit=^5.7'
+  PHPUNIT_VERSION="${PHPUNIT_VERSION:-^3.8}";
+  composer require --no-interaction "phpunit/phpunit=${PHPUNIT_VERSION}"
 fi
 
 cp -a ./vendor/* ./Vendor/
