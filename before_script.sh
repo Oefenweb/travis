@@ -90,7 +90,7 @@ for dep in $REQUIRE; do
 done
 
 if [ "$PHPCS" != '1' ]; then
-  PHPUNIT_VERSION="${PHPUNIT_VERSION:-^3.8}";
+  PHPUNIT_VERSION="${PHPUNIT_VERSION:-^3.7}";
   composer require --no-interaction "phpunit/phpunit=${PHPUNIT_VERSION}"
 fi
 
