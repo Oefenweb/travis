@@ -15,7 +15,7 @@ fi
 touch ~/.github-headers
 if [ -n "${GITHUB_ACCESS_TOKEN}" ]; then
   set +x;
-  echo "-H 'Authorization: token ${GITHUB_ACCESS_TOKEN}'" > ~/.github-headers;
+  echo "-H \"Authorization: token ${GITHUB_ACCESS_TOKEN}\"" > ~/.github-headers;
   set -x;
 fi
 
