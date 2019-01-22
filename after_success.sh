@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# set -x;
+set -x;
 
 # Move to APP
 if [ -d ../cakephp/app ]; then
