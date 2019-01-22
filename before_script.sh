@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 #
 set -x;
+# set -e;
+# set -o pipefail;
+#
 
 composer self-update
 
@@ -9,13 +12,20 @@ if [ "$PHPCS" = '1' ]; then
   exit 0
 fi
 
+touch ~/.github-headers
+if [ -n "${GITHUB_ACCESS_TOKEN}" ]; then
+  set +x;
+  echo "-H Authorization: token ${GITHUB_ACCESS_TOKEN}" > ~/.github-headers;
+  set -x;
+fi
+
 #
 # Returns the latest reference (either a branch or tag) for any given
 # MAJOR.MINOR semantic versioning.
 #
 latest_ref() {
   # Get version from master branch
-  MASTER=$(curl --silent https://raw.githubusercontent.com/cakephp/cakephp/2.x/lib/Cake/VERSION.txt)
+  MASTER=$(curl -sSL -K ~/.github-headers https://raw.githubusercontent.com/cakephp/cakephp/2.x/lib/Cake/VERSION.txt)
   MASTER=$(echo "$MASTER" | tail -1 | grep -Ei "^$CAKE_VERSION\.")
   if [ -n "$MASTER" ]; then
     echo "2.x"
@@ -23,7 +33,7 @@ latest_ref() {
   fi
 
   # Check if any branch matches CAKE_VERSION
-  BRANCH=$(curl --silent https://api.github.com/repos/cakephp/cakephp/git/refs/heads)
+  BRANCH=$(curl -sSL -K ~/.github-headers https://api.github.com/repos/cakephp/cakephp/git/refs/heads)
   BRANCH=$(echo "$BRANCH" | grep -Ei "\"refs/heads/$CAKE_VERSION\"" | grep -oEi "$CAKE_VERSION" | tail -1)
   if [ -n "$BRANCH" ]; then
     echo "$BRANCH"
@@ -31,7 +41,7 @@ latest_ref() {
   fi
 
   # Get the latest tag matching CAKE_VERSION.*
-  TAG=$(curl --silent https://api.github.com/repos/cakephp/cakephp/git/refs/tags)
+  TAG=$(curl -sSL -K ~/.github-headers https://api.github.com/repos/cakephp/cakephp/git/refs/tags)
   TAG=$(echo "$TAG" | grep -Ei "\"refs/tags/$CAKE_VERSION\." | grep -oEi "$CAKE_VERSION\.[^\"]+" | tail -1)
   if [ -n "$TAG" ]; then
     echo "$TAG"
