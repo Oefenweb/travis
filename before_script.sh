@@ -19,9 +19,6 @@ if [ -n "${GITHUB_ACCESS_TOKEN}" ]; then
   set -x;
 fi
 
-curl -sSL -K ~/.github-headers https://api.github.com/user;
-exit;
-
 #
 # Returns the latest reference (either a branch or tag) for any given
 # MAJOR.MINOR semantic versioning.
