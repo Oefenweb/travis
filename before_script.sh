@@ -15,7 +15,7 @@ fi
 #
 latest_ref() {
   # Get version from master branch
-  MASTER=$(curl --silent https://raw.github.com/cakephp/cakephp/master/lib/Cake/VERSION.txt)
+  MASTER=$(curl --silent https://raw.githubusercontent.com/cakephp/cakephp/2.x/lib/Cake/VERSION.txt)
   MASTER=$(echo "$MASTER" | tail -1 | grep -Ei "^$CAKE_VERSION\.")
   if [ -n "$MASTER" ]; then
     echo "master"
@@ -30,7 +30,7 @@ latest_ref() {
     exit 0
   fi
 
-    # Get the latest tag matching CAKE_VERSION.*
+  # Get the latest tag matching CAKE_VERSION.*
   TAG=$(curl --silent https://api.github.com/repos/cakephp/cakephp/git/refs/tags)
   TAG=$(echo "$TAG" | grep -Ei "\"refs/tags/$CAKE_VERSION\." | grep -oEi "$CAKE_VERSION\.[^\"]+" | tail -1)
   if [ -n "$TAG" ]; then
