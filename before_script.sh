@@ -18,7 +18,7 @@ latest_ref() {
   MASTER=$(curl --silent https://raw.githubusercontent.com/cakephp/cakephp/2.x/lib/Cake/VERSION.txt)
   MASTER=$(echo "$MASTER" | tail -1 | grep -Ei "^$CAKE_VERSION\.")
   if [ -n "$MASTER" ]; then
-    echo "master"
+    echo "2.x"
     exit 0
   fi
 
