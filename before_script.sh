@@ -15,9 +15,12 @@ fi
 touch ~/.github-headers
 if [ -n "${GITHUB_ACCESS_TOKEN}" ]; then
   set +x;
-  echo "-H Authorization: token ${GITHUB_ACCESS_TOKEN}" > ~/.github-headers;
+  echo "-H 'Authorization: token ${GITHUB_ACCESS_TOKEN}'" > ~/.github-headers;
   set -x;
 fi
+
+curl -sSL -K ~/.github-headers https://api.github.com/user;
+exit;
 
 #
 # Returns the latest reference (either a branch or tag) for any given
