@@ -80,7 +80,7 @@ for dep in $REQUIRE; do
 done
 
 if [ "$PHPCS" != '1' ]; then
-  composer require --no-interaction 'phpunit/phpunit=3.7.38'
+  composer require --no-interaction 'phpunit/phpunit=^5.7'
 fi
 
 cp -a ./vendor/* ./Vendor/
